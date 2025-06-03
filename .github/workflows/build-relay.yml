@@ -214,6 +214,15 @@ jobs:
       - name: List artifacts
         run: find ./artifacts -type f -ls
 
+      - name: Install GitHub CLI
+        run: |
+          type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+          && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+          && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+          && sudo apt update \
+          && sudo apt install gh -y
+
       - name: Get version from private repo
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
@@ -223,8 +232,32 @@ jobs:
           git checkout ${{ github.event.client_payload.ref || github.event.inputs.ref || 'main' }}
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Found version: $VERSION"
           cd ..
           rm -rf temp-source
+
+      - name: Delete existing release and tag if they exist
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
+        run: |
+          echo "Checking for existing release v${{ env.VERSION }}..."
+          
+          # Delete existing release if it exists
+          if gh release view "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Release v${{ env.VERSION }} exists, deleting..."
+            gh release delete "v${{ env.VERSION }}" --yes
+            echo "Release deleted successfully"
+          else
+            echo "Release v${{ env.VERSION }} doesn't exist, continuing..."
+          fi
+          
+          # Delete existing tag if it exists
+          if git ls-remote --tags origin | grep -q "refs/tags/v${{ env.VERSION }}"; then
+            echo "Tag v${{ env.VERSION }} exists remotely, deleting..."
+            git push origin ":refs/tags/v${{ env.VERSION }}" || echo "Failed to delete remote tag, continuing..."
+          else
+            echo "Tag v${{ env.VERSION }} doesn't exist remotely"
+          fi
 
       - name: Create Release
         id: create_release
@@ -306,7 +339,6 @@ jobs:
           ls -la *.zip || echo "No archives created"
 
       - name: Upload macOS ARM64 Release Asset
-        if: hashFiles('./artifacts/FigShot-macOS-ARM64-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
@@ -315,9 +347,9 @@ jobs:
           asset_path: ./artifacts/FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
           asset_name: FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
+        continue-on-error: true
 
       - name: Upload macOS Intel Release Asset  
-        if: hashFiles('./artifacts/FigShot-macOS-Intel-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
@@ -326,9 +358,9 @@ jobs:
           asset_path: ./artifacts/FigShot-macOS-Intel-v${{ env.VERSION }}.zip
           asset_name: FigShot-macOS-Intel-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
+        continue-on-error: true
 
       - name: Upload Windows Release Asset
-        if: hashFiles('./artifacts/FigShot-Windows-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
@@ -337,9 +369,9 @@ jobs:
           asset_path: ./artifacts/FigShot-Windows-v${{ env.VERSION }}.zip
           asset_name: FigShot-Windows-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
+        continue-on-error: true
 
       - name: Upload Linux Release Asset
-        if: hashFiles('./artifacts/FigShot-Linux-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
@@ -348,6 +380,7 @@ jobs:
           asset_path: ./artifacts/FigShot-Linux-v${{ env.VERSION }}.zip
           asset_name: FigShot-Linux-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
+        continue-on-error: true
 
   build-summary:
     needs: build
