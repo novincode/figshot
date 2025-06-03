@@ -1,0 +1,28 @@
+{
+  "name": "figshot",
+  "private": false,
+  "version": "1.1.0",
+  "description": "FigShot - Professional Screen Capture for Figma Workflows",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'This is a relay repository. Builds are triggered automatically from the private repo.'"
+  },
+  "keywords": [
+    "figma",
+    "screen-capture",
+    "recording",
+    "design-tools",
+    "tauri",
+    "cross-platform"
+  ],
+  "author": "novincode",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novincode/figshot.git"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,95 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.1.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Validate version format
+        run: |
+          if [[ ! "${{ github.event.inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Error: Version must be in format X.Y.Z (e.g., 1.1.0)"
+            exit 1
+          fi
+          
+      - name: Check if tag exists
+        run: |
+          if git rev-parse "v${{ github.event.inputs.version }}" >/dev/null 2>&1; then
+            echo "Error: Tag v${{ github.event.inputs.version }} already exists"
+            exit 1
+          fi
+          
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ github.event.inputs.version }}" -m "Release v${{ github.event.inputs.version }}"
+          git push origin "v${{ github.event.inputs.version }}"
+          
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          release_name: FigShot v${{ github.event.inputs.version }}
+          body: |
+            ## FigShot v${{ github.event.inputs.version }}
+            
+            Professional screen capture and recording tool optimized for Figma workflows.
+            
+            ### Downloads
+            
+            Builds will be available shortly. This release will be populated with binaries from the automated build process.
+            
+            **macOS:**
+            - ARM64 (Apple Silicon): For M1/M2/M3 Macs
+            - Intel: For Intel-based Macs
+            
+            **Windows:**
+            - MSI Installer: Recommended for most users
+            - EXE Installer: Alternative installer
+            
+            **Linux:**
+            - DEB Package: For Debian/Ubuntu systems
+            - RPM Package: For Red Hat/Fedora systems  
+            - AppImage: Universal Linux application
+            
+            ### Installation Notes
+            
+            **macOS Users:** If you encounter security warnings, use the included security fix scripts in the download package.
+            
+            **Linux Users:** You may need to make the AppImage executable: `chmod +x FigShot*.AppImage`
+            
+            ---
+            
+            *Binaries will be automatically uploaded when the build completes.*
+          draft: true
+          prerelease: ${{ github.event.inputs.prerelease }}
+          
+      - name: Summary
+        run: |
+          echo "## Release Created 🎉" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** v${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Pre-release:** ${{ github.event.inputs.prerelease }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** Draft (will be published when build completes)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The release has been created as a draft. It will be automatically" >> $GITHUB_STEP_SUMMARY
+          echo "populated with binaries when the build process completes." >> $GITHUB_STEP_SUMMARY
