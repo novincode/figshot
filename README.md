@@ -35,3 +35,4 @@ MIT License - see LICENSE file for details.
 ---
 
 *Built with ❤️ using Tauri + React + Rust*
+ 

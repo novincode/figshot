@@ -270,27 +270,84 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload macOS ARM64 Release Assets
+      - name: Create release archives
+        run: |
+          cd ./artifacts
+          
+          # Create macOS ARM64 archive
+          if [ -d "macos-arm64" ]; then
+            cd macos-arm64
+            zip -r ../FigShot-macOS-ARM64-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            cd ..
+          fi
+          
+          # Create macOS Intel archive  
+          if [ -d "macos-intel" ]; then
+            cd macos-intel
+            zip -r ../FigShot-macOS-Intel-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            cd ..
+          fi
+          
+          # Create Windows archive
+          if [ -d "windows" ]; then
+            cd windows
+            zip -r ../FigShot-Windows-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            cd ..
+          fi
+          
+          # Create Linux archive
+          if [ -d "linux" ]; then
+            cd linux
+            zip -r ../FigShot-Linux-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            cd ..
+          fi
+          
+          # List created archives
+          ls -la *.zip || echo "No archives created"
+
+      - name: Upload macOS ARM64 Release Asset
+        if: hashFiles('./artifacts/FigShot-macOS-ARM64-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/macos-arm64
+          asset_path: ./artifacts/FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
           asset_name: FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
-        continue-on-error: true
 
-      - name: Upload macOS Intel Release Assets  
+      - name: Upload macOS Intel Release Asset  
+        if: hashFiles('./artifacts/FigShot-macOS-Intel-v*.zip') != ''
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/macos-intel
+          asset_path: ./artifacts/FigShot-macOS-Intel-v${{ env.VERSION }}.zip
           asset_name: FigShot-macOS-Intel-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
-        continue-on-error: true
+
+      - name: Upload Windows Release Asset
+        if: hashFiles('./artifacts/FigShot-Windows-v*.zip') != ''
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/FigShot-Windows-v${{ env.VERSION }}.zip
+          asset_name: FigShot-Windows-v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
+
+      - name: Upload Linux Release Asset
+        if: hashFiles('./artifacts/FigShot-Linux-v*.zip') != ''
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/FigShot-Linux-v${{ env.VERSION }}.zip
+          asset_name: FigShot-Linux-v${{ env.VERSION }}.zip
+          asset_content_type: application/zip
 
   build-summary:
     needs: build
