@@ -1,24 +1,49 @@
+<style>
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.hero-logo {
+  flex-shrink: 0;
+}
+.hero-logo img {
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.hero-content {
+  text-align: left;
+  max-width: 400px;
+}
+@media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  .hero-content {
+    text-align: center;
+    max-width: none;
+  }
+}
+</style>
+
 <div align="center">
 
-<table border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td width="200" align="center" valign="middle">
-<img src="docs/animated-logo.gif" alt="FigShot in Action" width="160" height="160"/>
-</td>
-<td width="20"></td>
-<td align="left" valign="middle">
-
-# FigShot 📸
-
-**Professional screen capture reimagined for design workflows**
-
-🚀 **Free & Open Source** • 🎯 **Designer-First** • 🌍 **Cross-Platform**
-
-*Transform how you document, share, and collaborate on digital designs*
-
-</td>
-</tr>
-</table>
+<div class="hero-container">
+  <div class="hero-logo">
+    <img src="docs/animated-logo.gif" alt="FigShot in Action" width="160" height="160"/>
+  </div>
+  <div class="hero-content">
+    <h1>FigShot 📸</h1>
+    <p><strong>Professional screen capture reimagined for design workflows</strong></p>
+    <p>🚀 <strong>Free & Open Source</strong> • 🎯 <strong>Designer-First</strong> • 🌍 <strong>Cross-Platform</strong></p>
+    <p><em>Transform how you document, share, and collaborate on digital designs</em></p>
+  </div>
+</div>
 
 </div>
 
