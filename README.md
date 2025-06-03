@@ -1,12 +1,24 @@
 <div align="center">
 
-![FigShot Animation](docs/animated-logo.gif)
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="200" align="center" valign="middle">
+<img src="docs/animated-logo.gif" alt="FigShot in Action" width="160" height="160"/>
+</td>
+<td width="20"></td>
+<td align="left" valign="middle">
 
 # FigShot 📸
 
-> **Professional screen capture reimagined for design workflows**
+**Professional screen capture reimagined for design workflows**
 
-Transform how you document, share, and collaborate on digital designs with FigShot – the free, open-source screen capture tool built specifically for designers and developers.
+🚀 **Free & Open Source** • 🎯 **Designer-First** • 🌍 **Cross-Platform**
+
+*Transform how you document, share, and collaborate on digital designs*
+
+</td>
+</tr>
+</table>
 
 </div>
 
