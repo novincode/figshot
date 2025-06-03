@@ -1,8 +1,14 @@
+<div align="center">
+
+![FigShot Animation](docs/animated-logo.gif)
+
 # FigShot 📸
 
 > **Professional screen capture reimagined for design workflows**
 
 Transform how you document, share, and collaborate on digital designs with FigShot – the free, open-source screen capture tool built specifically for designers and developers.
+
+</div>
 
 <div align="center">
 
@@ -20,6 +26,8 @@ Transform how you document, share, and collaborate on digital designs with FigSh
 ## 🌟 Why FigShot?
 
 **We believe powerful design tools should be accessible to everyone.** That's why FigShot is free, open-source, and designed with the community in mind.
+
+*✨ Fun fact: The animated logo above was created using FigShot itself – showcasing the smooth, professional-quality recordings you can achieve!*
 
 ### ✨ **Core Philosophy**
 - **🆓 Free Forever**: Full features, full exports, no hidden costs
