@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch or tag to build from private repository'
+        description: 'Branch or Tag to build from private repository'
         required: false
         default: 'main'
         type: string
