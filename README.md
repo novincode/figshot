@@ -32,7 +32,7 @@
 *✨ Fun fact: The animated logo above was created using FlowShot itself – showcasing the smooth, professional-quality recordings you can achieve!*
 
 ### ✨ **Core Philosophy**
-- **🆓 Free Forever**: Full features, full exports, no hidden costs
+- **🆓 Free Forever**: Full Features, full exports, no hidden costs
 - **🔓 Open Source**: Transparent, community-driven development
 - **🎯 Designer-First**: Built specifically for Figma and design workflows
 - **🌱 Sustainable**: Thoughtful limits support ongoing development
