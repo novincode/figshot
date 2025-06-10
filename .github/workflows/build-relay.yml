@@ -1,8 +1,8 @@
-name: Build FigShot from Private Repository
+name: Build FlowShot from Private Repository
 
 on:
   repository_dispatch:
-    types: [build-figshot]
+    types: [build-flowshot]
   workflow_dispatch:
     inputs:
       ref:
@@ -156,7 +156,7 @@ jobs:
           path: |
             source/release-package/
             source/src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
-            source/src-tauri/target/${{ matrix.target }}/release/FigShot*
+            source/src-tauri/target/${{ matrix.target }}/release/FlowShot*
           if-no-files-found: warn
           retention-days: 30
 
@@ -168,7 +168,7 @@ jobs:
           path: |
             source/release-package/
             source/src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
-            source/src-tauri/target/${{ matrix.target }}/release/FigShot*
+            source/src-tauri/target/${{ matrix.target }}/release/FlowShot*
           if-no-files-found: warn
           retention-days: 30
 
@@ -180,7 +180,7 @@ jobs:
           path: |
             source/src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
             source/src-tauri/target/${{ matrix.target }}/release/bundle/nsis/*.exe
-            source/src-tauri/target/${{ matrix.target }}/release/FigShot.exe
+            source/src-tauri/target/${{ matrix.target }}/release/FlowShot.exe
           if-no-files-found: warn
           retention-days: 30
 
@@ -193,7 +193,7 @@ jobs:
             source/src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
             source/src-tauri/target/${{ matrix.target }}/release/bundle/rpm/*.rpm
             source/src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage
-            source/src-tauri/target/${{ matrix.target }}/release/FigShot
+            source/src-tauri/target/${{ matrix.target }}/release/FlowShot
           if-no-files-found: warn
           retention-days: 30
 
@@ -266,9 +266,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           tag_name: v${{ env.VERSION }}
-          release_name: FigShot v${{ env.VERSION }}
+          release_name: FlowShot v${{ env.VERSION }}
           body: |
-            ## FigShot v${{ env.VERSION }}
+            ## FlowShot v${{ env.VERSION }}
             
             Professional screen capture and recording tool optimized for Figma workflows.
             
@@ -291,7 +291,7 @@ jobs:
             
             **macOS Users:** If you encounter security warnings, use the included security fix scripts in the download package.
             
-            **Linux Users:** You may need to make the AppImage executable: `chmod +x FigShot*.AppImage`
+            **Linux Users:** You may need to make the AppImage executable: `chmod +x FlowShot*.AppImage`
             
             ### What's New
             - Built from commit: ${{ github.event.client_payload.sha || github.sha }}
@@ -310,28 +310,28 @@ jobs:
           # Create macOS ARM64 archive
           if [ -d "macos-arm64" ]; then
             cd macos-arm64
-            zip -r ../FigShot-macOS-ARM64-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            zip -r ../FlowShot-macOS-ARM64-v${{ env.VERSION }}.zip . -x "*.DS_Store"
             cd ..
           fi
           
           # Create macOS Intel archive  
           if [ -d "macos-intel" ]; then
             cd macos-intel
-            zip -r ../FigShot-macOS-Intel-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            zip -r ../FlowShot-macOS-Intel-v${{ env.VERSION }}.zip . -x "*.DS_Store"
             cd ..
           fi
           
           # Create Windows archive
           if [ -d "windows" ]; then
             cd windows
-            zip -r ../FigShot-Windows-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            zip -r ../FlowShot-Windows-v${{ env.VERSION }}.zip . -x "*.DS_Store"
             cd ..
           fi
           
           # Create Linux archive
           if [ -d "linux" ]; then
             cd linux
-            zip -r ../FigShot-Linux-v${{ env.VERSION }}.zip . -x "*.DS_Store"
+            zip -r ../FlowShot-Linux-v${{ env.VERSION }}.zip . -x "*.DS_Store"
             cd ..
           fi
           
@@ -344,8 +344,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
-          asset_name: FigShot-macOS-ARM64-v${{ env.VERSION }}.zip
+          asset_path: ./artifacts/FlowShot-macOS-ARM64-v${{ env.VERSION }}.zip
+          asset_name: FlowShot-macOS-ARM64-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
         continue-on-error: true
 
@@ -355,8 +355,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/FigShot-macOS-Intel-v${{ env.VERSION }}.zip
-          asset_name: FigShot-macOS-Intel-v${{ env.VERSION }}.zip
+          asset_path: ./artifacts/FlowShot-macOS-Intel-v${{ env.VERSION }}.zip
+          asset_name: FlowShot-macOS-Intel-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
         continue-on-error: true
 
@@ -366,8 +366,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/FigShot-Windows-v${{ env.VERSION }}.zip
-          asset_name: FigShot-Windows-v${{ env.VERSION }}.zip
+          asset_path: ./artifacts/FlowShot-Windows-v${{ env.VERSION }}.zip
+          asset_name: FlowShot-Windows-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
         continue-on-error: true
 
@@ -377,8 +377,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PRIVATE_REPO_PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/FigShot-Linux-v${{ env.VERSION }}.zip
-          asset_name: FigShot-Linux-v${{ env.VERSION }}.zip
+          asset_path: ./artifacts/FlowShot-Linux-v${{ env.VERSION }}.zip
+          asset_name: FlowShot-Linux-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
         continue-on-error: true
 
@@ -390,7 +390,7 @@ jobs:
     steps:
       - name: Build Summary
         run: |
-          echo "## FigShot Cross-Platform Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "## FlowShot Cross-Platform Build Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Source:** Private repository build relay" >> $GITHUB_STEP_SUMMARY
           echo "**Trigger:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY

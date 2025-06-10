@@ -1,7 +1,7 @@
 {
-  "name": "figshot",
+  "name": "flowshot",
   "version": "1.1.0",
-  "description": "FigShot - Professional Screen Capture for Figma Workflows",
+  "description": "FlowShot - Professional Screen Capture for Figma Workflows",
   "keywords": [
     "figma",
     "screen-capture",
@@ -13,6 +13,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/novincode/figshot.git"
+    "url": "https://github.com/novincode/flowshot.git"
   }
 }
